@@ -42,19 +42,31 @@ public class Phytagoras {
     }
 
     // calculate
-    public Double calculateHypotenuse() {
-        return Math.sqrt(
-                Math.pow( this.getPerpendicular(), 2 ) + Math.pow( this.getBase(), 2 )
-            );
+    public Double calculateHypotenuse() throws Exception {
+        try {
+            return Math.sqrt(
+                    Math.pow( this.getPerpendicular(), 2 ) + Math.pow( this.getBase(), 2 )
+                );
+        } catch (Exception ex) {  
+            throw new Exception(ex.getMessage());
+        }
     }
-    public Double calculatePerpendicular() {
-        return Math.sqrt(
-                Math.pow( this.getHypotenuse(), 2 ) - Math.pow( this.getBase(), 2 )
-            );
+    public Double calculatePerpendicular() throws Exception {
+        try {
+            return Math.sqrt(
+                    Math.pow( this.getHypotenuse(), 2 ) - Math.pow( this.getBase(), 2 )
+                );
+        } catch (Exception ex) {
+            throw new Exception(ex.getMessage());
+        }
     }
-    public Double calculateBase() {
-        return Math.sqrt(
-                Math.pow( this.getHypotenuse(), 2 ) - Math.pow( this.getPerpendicular(), 2 )
-            );
+    public Double calculateBase() throws Exception {
+        try {
+            return Math.sqrt(
+                    Math.pow( this.getHypotenuse(), 2 ) - Math.pow( this.getPerpendicular(), 2 )
+                );
+        } catch (Exception ex) {
+            throw new Exception(ex.getMessage());
+        }
     }
 }
