@@ -4,36 +4,43 @@ import java.util.HashMap;
 import java.util.Scanner;
 import java.util.function.Consumer;
 
+import static VerseMinds.ColoredConsole.ColoredConsole.*;
+
 import logic.math.Phytagoras;
+// import static VerseMinds.ConsolColor;
 
 public class CalcPhytagoras extends Phytagoras {
 
     private final Scanner scannerLine;
 
     private String choices;
-
-    private String announcer  = "Choice Side to Calculate \n";
+    private Boolean isErrorInput;
 
     public CalcPhytagoras() {
         this.scannerLine = new Scanner(System.in);
+        this.isErrorInput = false;
     }
 
     public void start() {
-        System.out.println(this.announcer);
+        if (!this.isErrorInput) {
+            println("Choose Side to Calculate \n", CYAN);
+        } else {
+            println("Please Choose Side to Calculate or Press CTRL + C to Exit \n", YELLOW);
+        }
 
         this.displayOptions();
         this.takeUserInput();
 
-        System.out.println("");
+        println("");
 
         if (!this.choices.isEmpty()) {
-            System.out.println("Your choice is: " + this.choices + "\n");
+            println("Your choice is: " + this.choices + "\n", GREEN);
 
-            this.announcer = "Choice Side to Calculate \n";
+            this.isErrorInput = false;
 
             this.calculate();
         } else {
-            this.announcer = "Please Choice Side to Calculate or press CTRL + C to exit \n";
+            this.isErrorInput = true;
 
             this.start();
         }
@@ -43,20 +50,24 @@ public class CalcPhytagoras extends Phytagoras {
         HashMap<String, Consumer<Double>> func = new HashMap<>(); 
         HashMap<String, String> question = new HashMap<>(); 
         
-        System.out.println("Calculate " + this.choices);
+        println("Calculate " + this.choices);
 
         if ("Hypotenuse".equalsIgnoreCase(this.choices)) {
 
+            // Set the question
             question.put("question_1", "Enter Perpendicular side: ");
             question.put("question_2", "Enter Base side: ");
 
+            // Set the function
             func.put("func_1", this::setPerpendicular);
             func.put("func_2", this::setBase);
             
+            // calculate
             this.calc(question, func);
 
+            // get result and display
             final Double result = this.calculateHypotenuse();
-            System.out.println("Result: " + result);
+            println("Result: " + result, GREEN);
 
         } else if ("Perpendicular".equalsIgnoreCase(this.choices)) {
 
@@ -69,7 +80,7 @@ public class CalcPhytagoras extends Phytagoras {
             this.calc(question, func);
 
             final Double result = this.calculatePerpendicular();
-            System.out.println("Result: " + result);
+            println("Result: " + result, GREEN);
 
         } else if ("Base".equalsIgnoreCase(this.choices)) {
 
@@ -82,32 +93,36 @@ public class CalcPhytagoras extends Phytagoras {
             this.calc(question, func);
 
             final Double result = this.calculateBase();
-            System.out.println("Result: " + result);
+            println("Result: " + result, GREEN);
 
         } else {
-            System.out.println("Please enter the correct type \n");
+            println("Please enter the correct type \n", RED);
             this.start();
         };
     }
 
     void calc(HashMap<String, String> question, HashMap<String, Consumer<Double>> func) {
-        System.out.println(question.get("question_1"));
+        // Display Question 1
+        println(question.get("question_1"), CYAN);
+        // Execute Function 1
         func.get("func_1").accept(scannerLine.nextDouble());
         
-        System.out.println("");
+        println("");
 
-        System.out.println(question.get("question_2"));
+        // Display Question 2
+        println(question.get("question_2"), CYAN);
+        // Execute Function 2
         func.get("func_2").accept(scannerLine.nextDouble());
         
-        System.out.println("");
+        println("");
     }
 
     void displayOptions() {
-        System.out.println("1. Hypotenuse");
-        System.out.println("2. Perpendicular");
-        System.out.println("3. Base \n");
+        println("1. Hypotenuse");
+        println("2. Perpendicular");
+        println("3. Base \n");
 
-        System.out.println("Answer:");
+        println("Answer:", CYAN);
     }
 
     void takeUserInput() {
