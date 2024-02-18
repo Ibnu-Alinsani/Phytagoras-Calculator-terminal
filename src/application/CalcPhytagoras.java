@@ -6,39 +6,36 @@ import java.util.function.Consumer;
 
 import logic.math.Phytagoras;
 
-public class Application extends Phytagoras {
+public class CalcPhytagoras extends Phytagoras {
 
-    Scanner scannerLine;
+    private final Scanner scannerLine;
 
-    String choices;
+    private String choices;
 
-    enum sidePhytagoras {
-        Hypotenuse, Perpendicular, Base
-    };
+    private String announcer  = "Choice Side to Calculate \n";
 
-    public Application() {
+    public CalcPhytagoras() {
         this.scannerLine = new Scanner(System.in);
-        // HashMap<String, Object> mapperFunction;
-        // mapperFunction.put("hypo", super.setPerpendicular);
     }
 
-    public void choice() {
-        System.out.println("Choice Side to Calculate \n");
+    public void start() {
+        System.out.println(this.announcer);
 
-        System.out.println("1. Hypotenuse");
-        System.out.println("2. Perpendicular");
-        System.out.println("3. Base \n");
-
-        System.out.println("Answer:");
-
-        this.choices = this.scannerLine.nextLine();
+        this.displayOptions();
+        this.takeUserInput();
 
         System.out.println("");
 
-        System.out.println("Your choice is: " + this.choices + "\n");
+        if (!this.choices.isEmpty()) {
+            System.out.println("Your choice is: " + this.choices + "\n");
 
-        if (this.choices != "") {
+            this.announcer = "Choice Side to Calculate \n";
+
             this.calculate();
+        } else {
+            this.announcer = "Please Choice Side to Calculate or press CTRL + C to exit \n";
+
+            this.start();
         }
     }
 
@@ -59,9 +56,10 @@ public class Application extends Phytagoras {
             this.calc(question, func);
 
             final Double result = this.calculateHypotenuse();
-
             System.out.println("Result: " + result);
+
         } else if ("Perpendicular".equalsIgnoreCase(this.choices)) {
+
             question.put("question_1", "Enter Hypotenuse side: ");
             question.put("question_2", "Enter Base side: ");
 
@@ -71,13 +69,10 @@ public class Application extends Phytagoras {
             this.calc(question, func);
 
             final Double result = this.calculatePerpendicular();
-
             System.out.println("Result: " + result);
-            // this.calcPerpen();
-            // final Double result = super.calculatePerpendicular();
 
-            // System.out.println("Result: " + result);
         } else if ("Base".equalsIgnoreCase(this.choices)) {
+
             question.put("question_1", "Enter Hypotenuse side: ");
             question.put("question_2", "Enter Perpendicular side: ");
 
@@ -87,11 +82,11 @@ public class Application extends Phytagoras {
             this.calc(question, func);
 
             final Double result = this.calculateBase();
-
             System.out.println("Result: " + result);
+
         } else {
-            System.out.println("Please enter the correct type");
-            this.choice();
+            System.out.println("Please enter the correct type \n");
+            this.start();
         };
     }
 
@@ -105,5 +100,17 @@ public class Application extends Phytagoras {
         func.get("func_2").accept(scannerLine.nextDouble());
         
         System.out.println("");
+    }
+
+    void displayOptions() {
+        System.out.println("1. Hypotenuse");
+        System.out.println("2. Perpendicular");
+        System.out.println("3. Base \n");
+
+        System.out.println("Answer:");
+    }
+
+    void takeUserInput() {
+        this.choices = this.scannerLine.nextLine();
     }
 }
